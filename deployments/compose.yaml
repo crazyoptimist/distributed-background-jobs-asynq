@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ../
+      dockerfile: ./deployments/api.Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - REDIS_URL=${REDIS_URL}
+    <<: &default_logging
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "200k"
+          max-file: "10"
+    depends_on:
+      - redis
+
+  worker1:
+    container_name: worker1
+    build:
+      context: ../
+      dockerfile: ./deployments/worker.Dockerfile
+    environment:
+      - REDIS_URL=${REDIS_URL}
+    <<: *default_logging
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7
+    command: "redis-server --loglevel warning"
+    volumes:
+      - redis_data:/data/
+    ports:
+      - "6379:6379"
+    <<: *default_logging
+    restart: unless-stopped
+volumes:
+  redis_data:
