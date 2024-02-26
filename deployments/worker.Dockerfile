@@ -32,6 +32,6 @@ RUN adduser \
     appuser
 USER appuser
 
-COPY --from=build /bin/worker /bin/
+COPY --from=worker-builder /bin/worker /bin/
 
 ENTRYPOINT [ "/bin/worker" ]
