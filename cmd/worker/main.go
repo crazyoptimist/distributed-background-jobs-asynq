@@ -16,7 +16,8 @@ func main() {
 	srv := asynq.NewServer(
 		asynq.RedisClientOpt{Addr: redisAddr},
 		asynq.Config{
-			Concurrency: 4,
+			// No concurrency in a container, for demonstration purpose
+			Concurrency: 1,
 		},
 	)
 
