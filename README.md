@@ -6,19 +6,29 @@ Asynq is very impressive and easy to use. It ensures a task to be run at least o
 
 ## Instructions for Demo
 
+Create an env file.
+
+```bash
+cp ./deployments/.env.example ./deployments/.env
+```
+
+Run the app with docker.
+
 ```bash
 make docker
 make upd
 make log
 ```
 
+Request bunch of (virtual)heavy tasks via exposed API.
+
 ```bash
 for i in {1..11}; do; echo $i:; http http://localhost:8080/sleep seconds:=5; done;
 ```
 
-And watch logs to see what's happening. Individual worker containers run tasks concurrently. Concurrency in inside a worker has been disabled for demonstration purpose, which is configurable in the worker configuration code.
+Then watch logs to see what's happening. Individual worker containers run tasks concurrently. Concurrency inside a worker has been disabled for demonstration purposes, which is configurable in the worker configuration code.
 
-## MakeFile
+## Makefile
 
 build docker images
 ```bash
